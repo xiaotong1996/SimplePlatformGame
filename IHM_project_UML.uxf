@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>460</x>
+      <y>120</y>
+      <w>190</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>InputController
+--
+
+--
++ Vector2 PlayerMove();
++ Vector2 PlayerRun();
++ void PlayerJump();
++ void PlayerDoubleJump();
++ void PlayerJumpWall();
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>90</x>
+      <y>120</y>
+      <w>130</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>StateEnv(enum)
+--
+ONGROUND
+ONWALL
+UNDERWATER
+ONWATER
+ONICE
+ON
+//ONAIR
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>450</x>
+      <y>370</y>
+      <w>170</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>Platform
+--
++ Color(Texture)
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>810</x>
+      <y>120</y>
+      <w>100</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>SoundManager
+--
+
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>90</x>
+      <y>270</y>
+      <w>130</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>StatePlayer(enum)
+--
+IDLE
+DIE
+MOVE
+RUN
+JUMP
+JUMPDOUBLE
+JUMPWALL
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>250</x>
+      <y>120</y>
+      <w>170</w>
+      <h>240</h>
+    </coordinates>
+    <panel_attributes>Player
+--
++ StateEnv(StateEnv)
++ StateSelf(StatePlayer)
++ Gravity(float)
++ MoveDirection(Vector2)
++ MoveSpeed(float)
++ RunDirection(Vector2)
++ RunSpeed(float)
++ JumpForce(float)
+--
++ void Move()
++ void Run()
++ void Jump()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>310</x>
+      <y>490</y>
+      <w>170</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>PlatformFragile
+--
++ BrokenDuration(float)
++ RecreateTime(float)
+--
++ void Break()
++ void Recreate()
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>540</x>
+      <y>490</y>
+      <w>170</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>PlatformAutoMove
+--
++ MoveDirection(Vector2)
++ MoveSpeed(float)
+--
++ void AIMove()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>420</x>
+      <y>440</y>
+      <w>120</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>100.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>520</x>
+      <y>440</y>
+      <w>120</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;100.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>740</x>
+      <y>490</y>
+      <w>170</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>TrapNail
+--
+
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>790</x>
+      <y>380</y>
+      <w>170</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>Trap
+--
++ Color(Texture)
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>810</x>
+      <y>450</y>
+      <w>70</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>50.0;10.0;10.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>680</x>
+      <y>120</y>
+      <w>100</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>GameManager
+--
+
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>930</x>
+      <y>120</y>
+      <w>100</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>UIManager
+--
+
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>410</x>
+      <y>180</y>
+      <w>70</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=1
+</panel_attributes>
+    <additional_attributes>10.0;20.0;50.0;20.0</additional_attributes>
+  </element>
+</diagram>
