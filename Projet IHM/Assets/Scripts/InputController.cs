@@ -11,7 +11,7 @@ public class InputController : MonoBehaviour
 
     Vector2 PlayerMove()
     {
-        return new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        return new Vector2(Input.GetAxis("Horizontal"), 0);
     }
 
     // Start is called before the first frame update
