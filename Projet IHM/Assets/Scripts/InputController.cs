@@ -14,6 +14,11 @@ public class InputController : MonoBehaviour
         return new Vector2(Input.GetAxis("Horizontal"), 0);
     }
 
+    void PlayerJump()
+    {
+        player.Jump();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -24,5 +29,9 @@ public class InputController : MonoBehaviour
     void Update()
     {
         player.MoveDirection = PlayerMove();
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            PlayerJump();
+        }
     }
 }

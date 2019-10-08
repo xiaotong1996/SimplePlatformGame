@@ -111,7 +111,7 @@ MonoBehaviour:
   gravity: 0
   moveSpeed: 5
   runSpeed: 0
-  jumpForce: 0
+  jumpForce: 5
 --- !u!50 &50986346015819352
 Rigidbody2D:
   serializedVersion: 4

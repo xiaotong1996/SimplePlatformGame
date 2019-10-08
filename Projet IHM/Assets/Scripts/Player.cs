@@ -64,6 +64,9 @@ public class Player : MonoBehaviour
 
     public float JumpForce { get => jumpForce; set => jumpForce = value; }
 
+    private new Rigidbody2D rigidbody;
+    private Vector3 v;
+
     public void Move()
     {
         transform.Translate(new Vector2(MoveDirection.x, MoveDirection.y) * MoveSpeed * Time.deltaTime);
@@ -76,9 +79,14 @@ public class Player : MonoBehaviour
 
     public void Jump()
     {
-
+        v = rigidbody.velocity;
+        rigidbody.velocity = new Vector3(v.x, JumpForce, v.z);
     }
 
+    private void Awake()
+    {
+        rigidbody = gameObject.GetComponent<Rigidbody2D>();
+    }
     void Update()
     {
         Move();
