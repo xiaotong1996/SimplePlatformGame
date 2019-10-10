@@ -59,7 +59,9 @@ public class Player : MonoBehaviour
     private Vector3 v;
 
     private bool isOnGround;
-
+    private bool isOnWall;
+    private int onWallDirection = 0; //true-->left  false -->right;
+    private float rayDistance = 0.25f;
 
 
 
@@ -96,30 +98,21 @@ public class Player : MonoBehaviour
         rigidbody.velocity = new Vector3(v.x, JumpForce, v.z);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.tag == "Ground")
-        {
-            isOnGround = true;
-            Debug.Log("collision ENter");
-        }
-            
 
-    }
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.tag == "Ground")
-        {
-            isOnGround = false;
-            Debug.Log("collision Exit");
-        }
-            
-    }
 
     public bool IsOnGround()
     {
         return isOnGround;
     }
+    public bool IsOnWall()
+    {
+        return isOnWall;
+    }
+    public int OnWallDirection()
+    {
+        return onWallDirection;
+    }
+
 
     public bool IsIdle()
     {
@@ -137,5 +130,51 @@ public class Player : MonoBehaviour
     {
         //Move(); 
         StatePlayer.HandleInput();
+        //TODO  FIX JUMP
+        //Physics2D.gravity = new Vector2(0, -15);
+        CheckIsOnGround();
+        CheckIsOnWall();
+    }
+
+    void CheckIsOnGround()
+    {
+        Debug.DrawRay(transform.position, Vector2.down * rayDistance, Color.red);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, rayDistance, 1 << LayerMask.NameToLayer("Ground"));
+        if (hit.collider != null)
+        {
+            isOnGround = true;
+        }
+        else
+        {
+            isOnGround = false;
+
+        }
+        Debug.Log("isOnGround: " + isOnGround);
+    }
+
+    void CheckIsOnWall()
+    {
+        Debug.DrawRay(transform.position, Vector2.left * rayDistance, Color.green);
+        Debug.DrawRay(transform.position, Vector2.right * rayDistance, Color.green);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.left, rayDistance, 1 << LayerMask.NameToLayer("Wall"));
+        RaycastHit2D hit2 = Physics2D.Raycast(transform.position, Vector2.right, rayDistance, 1 << LayerMask.NameToLayer("Wall"));
+        if (hit.collider == null && hit2.collider == null)
+        {
+            
+            isOnWall = false;
+        }
+        else if(hit.collider != null)
+        {
+            onWallDirection = -1;
+            isOnWall = true;
+
+        }
+        else if (hit2.collider != null)
+        {
+            onWallDirection = 1;
+            isOnWall = true;
+
+        }
+        
     }
 }
