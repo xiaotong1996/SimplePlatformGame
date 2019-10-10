@@ -14,19 +14,6 @@ public enum StateEnv
     ONICE
 }
 
-/// <summary>
-/// Enum <c>StatePlayer</c> represents player's state.
-/// </summary>
-public enum StatePlayer
-{
-    IDLE,
-    DIE,
-    MOVE,
-    RUN,
-    JUMP,
-    JUMPDOUBLE,
-    JUMPWALL
-}
 
 /// <summary>
 /// Class <c>Player</c> models main character that player controls.
@@ -35,6 +22,8 @@ public class Player : MonoBehaviour
 {
     [SerializeField]
     private StatePlayer statePlayerSelf;
+    //[SerializeField]
+    //private PlayerBaseState currentState;
 
     [SerializeField]
     private float gravity;
@@ -64,23 +53,63 @@ public class Player : MonoBehaviour
 
     public float JumpForce { get => jumpForce; set => jumpForce = value; }
 
+    //public PlayerBaseState CurrentState { get => currentState; set => currentState = value; }
+
+    private new Rigidbody2D rigidbody;
+    private Vector3 v;
+
+    private bool isOnGround;
+
+
+
+
     public void Move()
     {
         transform.Translate(new Vector2(MoveDirection.x, MoveDirection.y) * MoveSpeed * Time.deltaTime);
+        //rigidbody.AddForce(new Vector2(MoveDirection.x, 0) * MoveSpeed * Time.deltaTime, ForceMode2D.Impulse);
+    }
+
+    public void Idle()
+    {
+
     }
 
     public void Run()
     {
-
+        rigidbody.AddForce(new Vector2(MoveDirection.x, MoveDirection.y) * MoveSpeed*2 * Time.deltaTime, ForceMode2D.Impulse);
     }
 
     public void Jump()
     {
-
+        v = rigidbody.velocity;
+        rigidbody.velocity = new Vector3(v.x, JumpForce, v.z);
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Ground")
+            isOnGround = true;
+
+    }
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Ground")
+            isOnGround = false;
+    }
+
+    public bool IsOnGround()
+    {
+        return isOnGround;
+    }
+
+
+    private void Awake()
+    {
+        rigidbody = gameObject.GetComponent<Rigidbody2D>();
+        
+    }
     void Update()
     {
-        Move();
+        //Move();   
     }
 }

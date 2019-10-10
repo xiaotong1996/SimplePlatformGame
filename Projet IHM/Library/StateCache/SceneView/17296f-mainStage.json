@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 ﻿{"cameraMode":{"drawMode":0,"name":"Shaded","section":"Shading Mode"},"sceneLighting":true,"audioPlay":false,"sceneViewState":{"showFog":true,"showMaterialUpdate":false,"showSkybox":true,"showFlares":true,"showImageEffects":true,"showParticleSystems":true},"in2DMode":true,"pivot":{"x":-0.22729425132274629,"y":-0.23666054010391236,"z":-1.1198346614837647},"rotation":{"x":0.0,"y":0.0,"z":0.0,"w":1.0},"size":12.706902503967286,"orthographic":true}
+=======
+﻿{"cameraMode":{"drawMode":0,"name":"Shaded","section":"Shading Mode"},"sceneLighting":true,"audioPlay":false,"sceneViewState":{"showFog":true,"showMaterialUpdate":false,"showSkybox":true,"showFlares":true,"showImageEffects":true,"showParticleSystems":true},"in2DMode":true,"pivot":{"x":-2.0399999618530275,"y":-1.350000023841858,"z":-0.5},"rotation":{"x":0.0,"y":0.0,"z":0.0,"w":1.0},"size":16.181123733520509,"orthographic":true}
+>>>>>>> xtrelease

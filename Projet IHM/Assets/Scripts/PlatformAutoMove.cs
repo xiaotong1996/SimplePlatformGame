@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Class <c>PlatformAutoMove</c> represents platform move automatically form start point to end point.
+/// </summary>
 public class PlatformAutoMove : MonoBehaviour
 {
 
@@ -13,8 +16,11 @@ public class PlatformAutoMove : MonoBehaviour
     private float moveTime = 2f;
     [SerializeField]
     private float moveSpeed = 1f;
+    /// <summary>
+    /// check is Arrived at start point or end point  or not
+    /// </summary>
     [SerializeField]
-    private bool isArrive = false; // is Arrive at start point or end point  or not
+    private bool isArrive = false; 
 
     // Start is called before the first frame update
     void Start()
