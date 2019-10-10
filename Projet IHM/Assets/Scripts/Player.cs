@@ -20,10 +20,10 @@ public enum StateEnv
 /// </summary>
 public class Player : MonoBehaviour
 {
-    [SerializeField]
-    private StatePlayer statePlayerSelf;
     //[SerializeField]
-    //private PlayerBaseState currentState;
+    //private StatePlayer statePlayer;
+    [SerializeField]
+    private PlayerBaseState statePlayer;
 
     [SerializeField]
     private float gravity;
@@ -39,8 +39,6 @@ public class Player : MonoBehaviour
 
     public StateEnv StatePlayerEnvironment { set; get; }
 
-    public StatePlayer StatePlayerSelf1 { get => statePlayerSelf; set => statePlayerSelf = value; }
-
     public float Gravity { get => gravity; set => gravity = value; }
 
     public Vector2 MoveDirection { set; get; }
@@ -52,6 +50,8 @@ public class Player : MonoBehaviour
     public float RunSpeed { get => runSpeed; set => runSpeed = value; }
 
     public float JumpForce { get => jumpForce; set => jumpForce = value; }
+
+    public PlayerBaseState StatePlayer { get => statePlayer; set => statePlayer = value; }
 
     //public PlayerBaseState CurrentState { get => currentState; set => currentState = value; }
 
@@ -65,8 +65,18 @@ public class Player : MonoBehaviour
 
     public void Move()
     {
-        transform.Translate(new Vector2(MoveDirection.x, MoveDirection.y) * MoveSpeed * Time.deltaTime);
-        //rigidbody.AddForce(new Vector2(MoveDirection.x, 0) * MoveSpeed * Time.deltaTime, ForceMode2D.Impulse);
+        //transform.Translate(new Vector2(MoveDirection.x, MoveDirection.y) * MoveSpeed * Time.deltaTime);
+        //rigidbody.AddForce(new Vector2(MoveDirection.x, 0) * MoveSpeed , ForceMode2D.Impulse);
+        v = rigidbody.velocity;
+        rigidbody.velocity = new Vector3(MoveDirection.x * MoveSpeed, v.y, v.z);
+    }
+
+    public void MoveOnAir()
+    {
+        //transform.Translate(new Vector2(MoveDirection.x, MoveDirection.y) * MoveSpeed * Time.deltaTime);
+        //rigidbody.AddForce(new Vector2(MoveDirection.x, 0) * MoveSpeed , ForceMode2D.Impulse);
+        v = rigidbody.velocity;
+        rigidbody.velocity = new Vector3(MoveDirection.x * MoveSpeed, v.y, v.z);
     }
 
     public void Idle()
@@ -76,7 +86,8 @@ public class Player : MonoBehaviour
 
     public void Run()
     {
-        rigidbody.AddForce(new Vector2(MoveDirection.x, MoveDirection.y) * MoveSpeed*2 * Time.deltaTime, ForceMode2D.Impulse);
+        v = rigidbody.velocity;
+        rigidbody.velocity = new Vector3(MoveDirection.x * RunSpeed, v.y, v.z);
     }
 
     public void Jump()
@@ -88,13 +99,21 @@ public class Player : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Ground")
+        {
             isOnGround = true;
+            Debug.Log("collision ENter");
+        }
+            
 
     }
     private void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Ground")
+        {
             isOnGround = false;
+            Debug.Log("collision Exit");
+        }
+            
     }
 
     public bool IsOnGround()
@@ -102,14 +121,21 @@ public class Player : MonoBehaviour
         return isOnGround;
     }
 
+    public bool IsIdle()
+    {
+        return (rigidbody.velocity.x == 0)&& (rigidbody.velocity.y == 0) ? true : false;
+    }
+
 
     private void Awake()
     {
         rigidbody = gameObject.GetComponent<Rigidbody2D>();
+        StatePlayer = new IdleState(this);
         
     }
     void Update()
     {
-        //Move();   
+        //Move(); 
+        StatePlayer.HandleInput();
     }
 }

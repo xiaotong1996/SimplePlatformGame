@@ -19,31 +19,74 @@ public enum StatePlayer
 
 public abstract class PlayerBaseState
 {
-    public abstract StatePlayer StatePlayer { get; }
+    //public abstract StatePlayer StatePlayer { get; }
 
     public abstract void Update();
 
-    //public abstract void HandleInput();
+    public abstract void HandleInput();
 
 }
 
 public class IdleState : PlayerBaseState
 {
-    //private Player player;
+    private Player player;
 
-    public override StatePlayer StatePlayer
+    public IdleState(Player player)
     {
-        get
-        {
-            return StatePlayer.IDLE;
-        }
+        this.player = player;
+        Debug.Log("Player in IdleState");
     }
+
 
     public override void Update()
     {
         
     }
 
+    public override void HandleInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            //Debug.Log("get keyCode.Space");
+            player.Jump();
+            player.StatePlayer=new JumpState(this.player);
+        }
+        float moveDirectionX = Input.GetAxis("Horizontal");
+        if (moveDirectionX != 0)
+        {
+            player.MoveDirection = new Vector2(moveDirectionX, 0);
+            player.Move();
+            player.StatePlayer = new MoveState(this.player);
+        }
+    }
+
+}
+
+
+public class JumpState : PlayerBaseState
+{
+    private Player player;
+
+    public JumpState(Player player)
+    {
+        this.player = player;
+        Debug.Log("Player in JumpState");
+    }
+
+
+    public override void Update()
+    {
+        
+    }
+
+    public override void HandleInput()
+    {
+        
+        if (Input.GetKeyUp(KeyCode.Space)){
+            //Debug.Log("player is on air");
+            player.StatePlayer = new OnAirState(this.player);
+        }
+    }
 }
 
 
@@ -51,19 +94,220 @@ public class MoveState : PlayerBaseState
 {
     private Player player;
 
-    public override StatePlayer StatePlayer
+    public MoveState(Player player)
     {
-        get
-        {
-            return StatePlayer.MOVE;
-        }
+        this.player = player;
+        Debug.Log("Player in MoveState");
     }
+
 
     public override void Update()
     {
-        if (player != null)
+        
+    }
+
+    public override void HandleInput()
+    {
+        if (player.IsOnGround()&&player.IsIdle())
         {
+            //Debug.Log("player fall on ground");
+            player.StatePlayer = new IdleState(this.player);
+        }
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            player.Run();
+            player.StatePlayer = new RunState(this.player);
+        }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            //Debug.Log("get keyCode.Space");
+            player.Jump();
+            player.StatePlayer = new JumpState(this.player);
+        }
+        float moveDirectionX = Input.GetAxis("Horizontal");
+        if (moveDirectionX != 0)
+        {
+            player.MoveDirection = new Vector2(moveDirectionX, 0);
             player.Move();
+            //player.StatePlayer = new MoveState(this.player);
         }
     }
 }
+
+public class RunState : PlayerBaseState
+{
+    private Player player;
+
+    public RunState(Player player)
+    {
+        this.player = player;
+        Debug.Log("Player in RunState");
+    }
+
+
+    public override void Update()
+    {
+
+    }
+
+    public override void HandleInput()
+    {
+        if (player.IsOnGround() && player.IsIdle())
+        {
+            //Debug.Log("player fall on ground");
+            player.StatePlayer = new IdleState(this.player);
+        }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            //Debug.Log("get keyCode.Space");
+            player.Jump();
+            player.StatePlayer = new JumpState(this.player);
+        }
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            player.Run();
+            //player.StatePlayer = new RunState(this.player);
+        }
+    }
+}
+
+public class OnAirState : PlayerBaseState
+{
+    private Player player;
+
+    public OnAirState(Player player)
+    {
+        this.player = player;
+        Debug.Log("Player in OnAirState");
+    }
+
+
+    public override void Update()
+    {
+
+    }
+
+    public override void HandleInput()
+    {
+        float moveDirectionX = Input.GetAxis("Horizontal");
+        if (moveDirectionX != 0)
+        {
+            player.MoveDirection = new Vector2(moveDirectionX, 0);
+            player.MoveOnAir();
+            player.StatePlayer = new MoveOnAirState(this.player);
+        }
+        if (player.IsOnGround() && player.IsIdle())
+        {
+            //Debug.Log("player fall on ground");
+            player.StatePlayer = new IdleState(this.player);
+        }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            //Debug.Log("get keyCode.Space");
+            player.Jump();
+            player.StatePlayer = new DoubleJumpState(this.player);
+        }
+    }
+}
+
+public class MoveOnAirState : PlayerBaseState
+{
+    private Player player;
+
+    private bool isDoubleJumpOccured = false;
+
+    public MoveOnAirState(Player player)
+    {
+        this.player = player;
+        Debug.Log("Player in MoveOnAirState");
+    }
+
+
+    public override void Update()
+    {
+
+    }
+
+    public override void HandleInput()
+    {
+        if (player.IsOnGround())
+        {
+            //Debug.Log("player fall on ground");
+            player.StatePlayer = new IdleState(this.player);
+        }
+        float moveDirectionX = Input.GetAxis("Horizontal");
+        if (moveDirectionX != 0)
+        {
+            player.MoveDirection = new Vector2(moveDirectionX, 0);
+            player.MoveOnAir();
+            //player.StatePlayer = new MoveState(this.player);
+        }
+        if (Input.GetKeyDown(KeyCode.Space)&&isDoubleJumpOccured==false)
+        {
+            //Debug.Log("get keyCode.Space");
+            player.Jump();
+            isDoubleJumpOccured = true;
+            player.StatePlayer = new DoubleJumpState(this.player);
+
+        }
+    }
+}
+
+public class DoubleJumpState : PlayerBaseState
+{
+    private Player player;
+
+    public DoubleJumpState(Player player)
+    {
+        this.player = player;
+        Debug.Log("Player in DoubleJumpState");
+    }
+
+
+    public override void Update()
+    {
+
+    }
+
+    public override void HandleInput()
+    {
+        if (player.IsOnGround())
+        {
+            //Debug.Log("player fall on ground");
+            player.StatePlayer = new IdleState(this.player);
+        }
+        float moveDirectionX = Input.GetAxis("Horizontal");
+        if (moveDirectionX != 0)
+        {
+            player.MoveDirection = new Vector2(moveDirectionX, 0);
+            player.MoveOnAir();
+            //player.StatePlayer = new MoveState(this.player);
+        }
+    }
+}
+
+public class OnWallState : PlayerBaseState
+{
+    private Player player;
+
+    public OnWallState(Player player)
+    {
+        this.player = player;
+        Debug.Log("Player in OnWallState");
+    }
+
+
+    public override void Update()
+    {
+
+    }
+
+    public override void HandleInput()
+    {
+       
+    }
+}
+
+
+
+
