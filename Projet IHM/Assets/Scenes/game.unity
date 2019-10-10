@@ -159,6 +159,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wall (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 6069396969493503012, guid: a0b635e1b5310704a9987e1d23de1001,
+        type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 8494482916418338536, guid: a0b635e1b5310704a9987e1d23de1001,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -449,6 +454,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Wall (9)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6069396969493503012, guid: a0b635e1b5310704a9987e1d23de1001,
+        type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 8494482916418338536, guid: a0b635e1b5310704a9987e1d23de1001,
         type: 3}
@@ -1220,6 +1230,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wall (10)
       objectReference: {fileID: 0}
+    - target: {fileID: 6069396969493503012, guid: a0b635e1b5310704a9987e1d23de1001,
+        type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 8494482916418338536, guid: a0b635e1b5310704a9987e1d23de1001,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1304,6 +1319,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Wall (12)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6069396969493503012, guid: a0b635e1b5310704a9987e1d23de1001,
+        type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 8494482916418338536, guid: a0b635e1b5310704a9987e1d23de1001,
         type: 3}
@@ -1892,6 +1912,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Wall (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6069396969493503012, guid: a0b635e1b5310704a9987e1d23de1001,
+        type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 8494482916418338536, guid: a0b635e1b5310704a9987e1d23de1001,
         type: 3}
@@ -4425,6 +4450,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wall (8)
       objectReference: {fileID: 0}
+    - target: {fileID: 6069396969493503012, guid: a0b635e1b5310704a9987e1d23de1001,
+        type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 8494482916418338536, guid: a0b635e1b5310704a9987e1d23de1001,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5078,12 +5108,22 @@ PrefabInstance:
     - target: {fileID: 6350873588411781054, guid: 596d52369fbe9824596a6e7def490499,
         type: 3}
       propertyPath: moveSpeed
-      value: 500
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6350873588411781054, guid: 596d52369fbe9824596a6e7def490499,
+        type: 3}
+      propertyPath: jumpForce
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6350873588411781054, guid: 596d52369fbe9824596a6e7def490499,
+        type: 3}
+      propertyPath: runSpeed
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 50986346015819352, guid: 596d52369fbe9824596a6e7def490499,
         type: 3}
       propertyPath: m_LinearDrag
-      value: 10
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 50986346015819352, guid: 596d52369fbe9824596a6e7def490499,
         type: 3}
@@ -5093,29 +5133,11 @@ PrefabInstance:
     - target: {fileID: 50986346015819352, guid: 596d52369fbe9824596a6e7def490499,
         type: 3}
       propertyPath: m_Mass
-      value: 10
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8491291138134786040, guid: 596d52369fbe9824596a6e7def490499, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 596d52369fbe9824596a6e7def490499, type: 3}
---- !u!1 &5393386473539001277 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7108266365960171646, guid: 596d52369fbe9824596a6e7def490499,
-    type: 3}
-  m_PrefabInstance: {fileID: 5393386473539001276}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &5393386473539001278
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5393386473539001277}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ab04fa5e8513aa4d965bb82de4a7a18, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &8797447175486208646
 PrefabInstance:
   m_ObjectHideFlags: 0
