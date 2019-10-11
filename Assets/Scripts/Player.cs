@@ -30,6 +30,8 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     private float moveSpeed;
+    [SerializeField]
+    private float moveOnAirSpeed;
 
     [SerializeField]
     private float runSpeed;
@@ -44,6 +46,7 @@ public class Player : MonoBehaviour
     public Vector2 MoveDirection { set; get; }
 
     public float MoveSpeed { get => moveSpeed; set => moveSpeed = value; }
+    public float MoveOnAirSpeed { get => moveOnAirSpeed; set => moveOnAirSpeed = value; }
 
     public Vector2 RunDirection { set; get; }
 
@@ -78,7 +81,7 @@ public class Player : MonoBehaviour
         //transform.Translate(new Vector2(MoveDirection.x, MoveDirection.y) * MoveSpeed * Time.deltaTime);
         //rigidbody.AddForce(new Vector2(MoveDirection.x, 0) * MoveSpeed , ForceMode2D.Impulse);
         v = rigidbody.velocity;
-        rigidbody.velocity = new Vector3(MoveDirection.x * MoveSpeed, v.y, v.z);
+        rigidbody.velocity = new Vector3(MoveDirection.x * moveOnAirSpeed, v.y, v.z);
     }
 
     public void Idle()
@@ -96,6 +99,7 @@ public class Player : MonoBehaviour
     {
         v = rigidbody.velocity;
         rigidbody.velocity = new Vector3(v.x, JumpForce, v.z);
+
     }
 
 
@@ -124,14 +128,15 @@ public class Player : MonoBehaviour
     {
         rigidbody = gameObject.GetComponent<Rigidbody2D>();
         StatePlayer = new IdleState(this);
-        
+        Physics2D.gravity = new Vector2(0, Gravity);
+
     }
     void Update()
     {
         //Move(); 
         StatePlayer.HandleInput();
         //TODO  FIX JUMP
-        //Physics2D.gravity = new Vector2(0, -15);
+        
         CheckIsOnGround();
         CheckIsOnWall();
     }

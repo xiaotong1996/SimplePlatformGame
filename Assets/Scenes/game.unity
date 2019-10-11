@@ -5264,12 +5264,12 @@ PrefabInstance:
     - target: {fileID: 6443540524980617843, guid: 596d52369fbe9824596a6e7def490499,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7.837
+      value: 6.57
       objectReference: {fileID: 0}
     - target: {fileID: 6443540524980617843, guid: 596d52369fbe9824596a6e7def490499,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.154
+      value: 4.14
       objectReference: {fileID: 0}
     - target: {fileID: 6443540524980617843, guid: 596d52369fbe9824596a6e7def490499,
         type: 3}
@@ -5324,7 +5324,7 @@ PrefabInstance:
     - target: {fileID: 6350873588411781054, guid: 596d52369fbe9824596a6e7def490499,
         type: 3}
       propertyPath: jumpForce
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6350873588411781054, guid: 596d52369fbe9824596a6e7def490499,
         type: 3}
@@ -5335,6 +5335,16 @@ PrefabInstance:
         type: 3}
       propertyPath: distance
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6350873588411781054, guid: 596d52369fbe9824596a6e7def490499,
+        type: 3}
+      propertyPath: gravity
+      value: -30
+      objectReference: {fileID: 0}
+    - target: {fileID: 6350873588411781054, guid: 596d52369fbe9824596a6e7def490499,
+        type: 3}
+      propertyPath: moveOnAirSpeed
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 50986346015819352, guid: 596d52369fbe9824596a6e7def490499,
         type: 3}
@@ -5349,7 +5359,7 @@ PrefabInstance:
     - target: {fileID: 50986346015819352, guid: 596d52369fbe9824596a6e7def490499,
         type: 3}
       propertyPath: m_Mass
-      value: 100
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 50986346015819352, guid: 596d52369fbe9824596a6e7def490499,
         type: 3}
