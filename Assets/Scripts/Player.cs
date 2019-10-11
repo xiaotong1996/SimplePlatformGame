@@ -118,10 +118,13 @@ public class Player : MonoBehaviour
     }
 
 
-    public bool IsIdle()
-    {
-        return (rigidbody.velocity.x == 0)&& (rigidbody.velocity.y == 0) ? true : false;
-    }
+    //public bool IsIdle()
+    //{
+    //    Debug.Log(rigidbody.velocity.x);
+    //    Debug.Log(rigidbody.velocity.y);
+
+    //    return (rigidbody.velocity.x == 0)&& (rigidbody.velocity.y == 0) ? true : false;
+    //}
 
 
     private void Awake()
