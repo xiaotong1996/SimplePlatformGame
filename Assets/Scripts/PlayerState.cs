@@ -352,11 +352,11 @@ public class OnWallState : PlayerBaseState
          float moveDirectionX = Input.GetAxis("Horizontal");
        
 
-            if (Input.GetAxisRaw("Jump")==1 && (onWallDirection == -1 && moveDirectionX > 0 || (onWallDirection == 1) && moveDirectionX < 0))
+        if (Input.GetAxisRaw("Jump")==1 && (onWallDirection == -1 && moveDirectionX > 0 || (onWallDirection == 1) && moveDirectionX < 0))
         {
               
-                player.Jump();
-                player.StatePlayer = new JumpState(this.player);
+            player.Jump();
+            player.StatePlayer = new JumpState(this.player);
         }
             
 
