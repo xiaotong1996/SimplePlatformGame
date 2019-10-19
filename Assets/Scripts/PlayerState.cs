@@ -34,7 +34,7 @@ public class IdleState : PlayerBaseState
     public IdleState(Player player)
     {
         this.player = player;
-        Debug.Log("Player in IdleState");
+        //Debug.Log("Player in IdleState");
     }
 
 
@@ -48,7 +48,7 @@ public class IdleState : PlayerBaseState
         //Input.GetKeyDown(KeyCode.Joystick1Button0)
         if (Input.GetAxisRaw("Jump")==1)
         {
-            Debug.Log("get keyCode.Space");
+            //Debug.Log("get keyCode.Space");
             player.Jump();
             player.StatePlayer=new JumpState(this.player);
         }
@@ -82,20 +82,34 @@ public class JumpState : PlayerBaseState
 
     public override void HandleInput()
     {
+
+
         
-        if (!player.IsOnGround()&& Input.GetAxisRaw("Jump") == 0)
+        if (!player.IsOnGround()&& Input.GetAxisRaw("Jump") == 0 )
         {
-            //Input.GetAxisRaw("Jump") == 1
-            //Debug.Log("player is on air");
-            player.StatePlayer = new OnAirState(this.player);
+
+            if(player.WallSlide())
+            {
+                player.StatePlayer = new OnWallState(this.player);
+            }
+            else
+            {
+               
+                player.StatePlayer = new OnAirState(this.player);
+            }
+           
         }
-        float moveDirectionX = Input.GetAxis("Horizontal");
-        if (moveDirectionX != 0)
+        else 
         {
-            player.MoveDirection = new Vector2(moveDirectionX, 0);
-            player.Move();
-            player.StatePlayer = new MoveState(this.player);
+            float moveDirectionX = Input.GetAxis("Horizontal");
+            if (moveDirectionX != 0)
+            {
+                player.MoveDirection = new Vector2(moveDirectionX, 0);
+                player.Move();
+                player.StatePlayer = new MoveState(this.player);
+            }
         }
+        
     }
 }
 
@@ -161,7 +175,7 @@ public class RunState : PlayerBaseState
     public RunState(Player player)
     {
         this.player = player;
-        Debug.Log("Player in RunState");
+       Debug.Log("Player in RunState");
     }
 
 
@@ -174,7 +188,7 @@ public class RunState : PlayerBaseState
     {
         if (player.IsOnGround() && Input.GetAxis("Horizontal")==0)
         {
-            Debug.Log("player fall on ground");
+            //Debug.Log("player fall on ground");
             player.StatePlayer = new IdleState(this.player);
         }
         if (Input.GetAxisRaw("Jump")==1&&player.IsOnGround())
@@ -219,28 +233,35 @@ public class OnAirState : PlayerBaseState
 
     public override void HandleInput()
     {
+        //Debug.Log("onwall"  + player.IsOnWall());
         float moveDirectionX = Input.GetAxis("Horizontal");
-        if (moveDirectionX != 0)
+        if (player.IsOnGround() && moveDirectionX == 0)
+        {
+            Debug.Log("aaaaaaaaa");
+            player.StatePlayer = new IdleState(this.player);
+        }
+        
+        else if (player.IsOnWall())
+        {
+            //Debug.Log("bbbbbbbbbb");
+            player.StatePlayer = new OnWallState(this.player);
+        }
+        else if (moveDirectionX != 0)
         {
             player.MoveDirection = new Vector2(moveDirectionX, 0);
             player.MoveOnAir();
             player.StatePlayer = new MoveOnAirState(this.player);
         }
-        if (player.IsOnGround() && moveDirectionX == 0)
+        else if (Input.GetAxisRaw("Jump") == 1)
         {
-            Debug.Log("player fall on ground");
-            player.StatePlayer = new IdleState(this.player);
-        }
-        if (Input.GetAxisRaw("Jump")==1)
-        {
-            Debug.Log("get keyCode.Space");
+            //Debug.Log("get keyCode.Space");
+            Debug.Log("cccccccccccccc");
             player.Jump();
             player.StatePlayer = new DoubleJumpState(this.player);
         }
-        if (player.IsOnWall())
-        {
-            player.StatePlayer = new OnWallState(this.player);
-        }
+        
+        
+
     }
 }
 
@@ -266,28 +287,32 @@ public class MoveOnAirState : PlayerBaseState
     {
         if (player.IsOnGround())
         {
-            Debug.Log("player fall on ground");
+            //Debug.Log("player fall on ground");
             player.StatePlayer = new IdleState(this.player);
         }
-        float moveDirectionX = Input.GetAxis("Horizontal");
-        if (moveDirectionX != 0)
-        {
-            player.MoveDirection = new Vector2(moveDirectionX, 0);
-            player.MoveOnAir();
-            //player.StatePlayer = new MoveState(this.player);
-        }
-        if (Input.GetAxisRaw("Jump")==1&&isDoubleJumpOccured==false)
-        {
-            Debug.Log("get keyCode.Space");
-            player.Jump();
-            isDoubleJumpOccured = true;
-            player.StatePlayer = new DoubleJumpState(this.player);
-
-        }
-        if (player.IsOnWall())
+        else if (player.IsOnWall())
         {
             player.StatePlayer = new OnWallState(this.player);
         }
+        else
+        {
+            float moveDirectionX = Input.GetAxis("Horizontal");
+            if (moveDirectionX != 0)
+            {
+                player.MoveDirection = new Vector2(moveDirectionX, 0);
+                player.MoveOnAir();
+                //player.StatePlayer = new MoveState(this.player);
+            }
+            if (Input.GetAxisRaw("Jump") == 1 && isDoubleJumpOccured == false)
+            {
+                //Debug.Log("get keyCode.Space");
+                player.Jump();
+                isDoubleJumpOccured = true;
+                player.StatePlayer = new DoubleJumpState(this.player);
+
+            }
+        }
+        
     }
 }
 
@@ -311,19 +336,137 @@ public class DoubleJumpState : PlayerBaseState
     {
         if (player.IsOnGround())
         {
-            Debug.Log("player fall on ground");
+            // Debug.Log("player fall on ground");
             player.StatePlayer = new IdleState(this.player);
         }
-        float moveDirectionX = Input.GetAxis("Horizontal");
-        if (moveDirectionX != 0)
+        else if (player.IsOnWall())
         {
-            player.MoveDirection = new Vector2(moveDirectionX, 0);
-            player.MoveOnAir();
-            //player.StatePlayer = new MoveState(this.player);
+            player.StatePlayer = new OnWallState(this.player);
+        }
+        else
+        {
+            float moveDirectionX = Input.GetAxis("Horizontal");
+            if (moveDirectionX != 0)
+            {
+                player.MoveDirection = new Vector2(moveDirectionX, 0);
+                player.MoveOnAir();
+                //player.StatePlayer = new MoveState(this.player);
+            }
         }
         
     }
 }
+
+
+public class WallClimbState : PlayerBaseState
+{
+    private Player player;
+
+
+    public WallClimbState(Player player)
+    {
+        this.player = player;
+        //Debug.Log("Player in WallClimbState");
+    }
+
+    public override void Update()
+    {
+        
+    }
+
+    public override void HandleInput()
+    {
+        Vector2 moveDirection = new Vector2(Input.GetAxis("Horizontal"), 0);
+        if(player.IsOnWall()&& Input.GetAxisRaw("Jump") == 0)
+        {
+            player.StatePlayer = new OnWallState(this.player);
+        }
+        else if (player.IsOnGround())
+        {
+            player.StatePlayer = new IdleState(this.player);
+        }
+        else if (!player.IsOnGround() && !player.IsOnWall())
+        {
+            player.StatePlayer = new OnAirState(this.player);
+        }
+    }
+}
+
+public class WallOffState: PlayerBaseState
+{
+    private Player player;
+
+    public WallOffState(Player player)
+    {
+        this.player = player;
+        //Debug.Log("Player in WallOffState");
+    }
+
+    public override void Update()
+    {
+
+    }
+
+    public override void HandleInput()
+    {
+        Vector2 moveDirection = new Vector2(Input.GetAxis("Horizontal"), 0);
+        if(player.IsOnGround())
+        {
+            player.StatePlayer = new IdleState(this.player);
+        }
+        else if(player.IsOnWall() && Input.GetAxisRaw("Jump") == 0)
+        {
+            player.StatePlayer = new OnWallState(this.player);
+        }
+        else if(!player.IsOnGround()&&!player.IsOnWall())
+        {
+            player.StatePlayer = new OnAirState(this.player);
+        }
+        
+    }
+}
+
+public class WallLeapState : PlayerBaseState
+{
+    private Player player;
+
+    public WallLeapState(Player player)
+    {
+        this.player = player;
+        //Debug.Log("Player in WallLeapState");
+    }
+
+    public override void Update()
+    {
+
+    }
+
+    public override void HandleInput()
+    {
+        Vector2 moveDirection = new Vector2(Input.GetAxis("Horizontal"), 0);
+        if (player.IsOnGround())
+        {
+            player.StatePlayer = new IdleState(this.player);
+        }
+        else if (player.IsOnWall() && Input.GetAxisRaw("Jump") == 0)
+        {
+            player.StatePlayer = new OnWallState(this.player);
+        }
+        else if (Input.GetAxisRaw("Jump") == 1 && player.OnWallDirection() == -moveDirection.normalized.x)
+        {
+            player.WallLeap();
+            player.StatePlayer = new WallLeapState(this.player);
+        }
+
+    }
+}
+
+
+
+
+
+
+
 
 public class OnWallState : PlayerBaseState
 {
@@ -332,7 +475,7 @@ public class OnWallState : PlayerBaseState
     public OnWallState(Player player)
     {
         this.player = player;
-        Debug.Log("Player in OnWallState");
+        //Debug.Log("Player in OnWallState");
     }
 
 
@@ -343,32 +486,27 @@ public class OnWallState : PlayerBaseState
 
     public override void HandleInput()
     {
-        int onWallDirection = player.OnWallDirection();
-        if (player.IsOnGround())
+        Vector2 moveDirection = new Vector2(Input.GetAxis("Horizontal"), 0);
+        if(player.IsOnGround())
         {
-            Debug.Log("player fall on ground");
+            
             player.StatePlayer = new IdleState(this.player);
         }
-         float moveDirectionX = Input.GetAxis("Horizontal");
-       
-
-            if (Input.GetAxisRaw("Jump")==1 && (onWallDirection == -1 && moveDirectionX > 0 || (onWallDirection == 1) && moveDirectionX < 0))
+        else if (Input.GetAxisRaw("Jump") == 1 && moveDirection.normalized.x == 0)
         {
-              
-                player.Jump();
-                player.StatePlayer = new JumpState(this.player);
+            player.WallOff();
+            player.StatePlayer = new WallOffState(this.player);
         }
-            
+        else if(Input.GetAxisRaw("Jump") == 1 && player.OnWallDirection()==moveDirection.normalized.x)
+        {
+            player.WallClimb();
+            player.StatePlayer = new WallClimbState(this.player);
 
-            if(moveDirectionX != 0)
-        {
-            player.MoveDirection = new Vector2(moveDirectionX, 0);
-            player.MoveOnAir();
         }
-           
-        if(onWallDirection == 0)
+        else if(Input.GetAxisRaw("Jump") == 1 && player.OnWallDirection() == -moveDirection.normalized.x)
         {
-            player.StatePlayer = new MoveOnAirState(this.player);
+            player.WallLeap();
+            player.StatePlayer = new WallLeapState(this.player);
         }
 
         

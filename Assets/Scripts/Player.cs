@@ -60,20 +60,25 @@ public class Player : MonoBehaviour
 
     private new Rigidbody2D rigidbody;
     private Vector3 v;
-
+    public float wallSlideSpeed = 2f;
+    
     private bool isOnGround;
     private bool isOnWall;
-    private int onWallDirection = 0; //true-->left  false -->right;
-    private float rayDistance = 0.25f;
+    private int onWallDirection = 0; //1-->left  -1 -->right;
+   
+    private float rayDistance = 0.1f;
 
-
+    public Vector2 wallClimbF;
+    public Vector2 wallOffF;
+    public Vector2 wallLeapF;
+    private bool wallSliding = false;
 
     public void Move()
     {
         //transform.Translate(new Vector2(MoveDirection.x, MoveDirection.y) * MoveSpeed * Time.deltaTime);
         //rigidbody.AddForce(new Vector2(MoveDirection.x, 0) * MoveSpeed , ForceMode2D.Impulse);
         v = rigidbody.velocity;
-        rigidbody.velocity = new Vector3(MoveDirection.x * MoveSpeed, v.y, v.z);
+        rigidbody.velocity = new Vector3(MoveDirection.normalized.x * MoveSpeed, v.y, v.z);
     }
 
     public void MoveOnAir()
@@ -81,7 +86,7 @@ public class Player : MonoBehaviour
         //transform.Translate(new Vector2(MoveDirection.x, MoveDirection.y) * MoveSpeed * Time.deltaTime);
         //rigidbody.AddForce(new Vector2(MoveDirection.x, 0) * MoveSpeed , ForceMode2D.Impulse);
         v = rigidbody.velocity;
-        rigidbody.velocity = new Vector3(MoveDirection.x * moveOnAirSpeed, v.y, v.z);
+        rigidbody.velocity = new Vector3(MoveDirection.normalized.x * MoveSpeed, v.y, v.z);
     }
 
     public void Idle()
@@ -89,10 +94,11 @@ public class Player : MonoBehaviour
 
     }
 
+
     public void Run()
     {
         v = rigidbody.velocity;
-        rigidbody.velocity = new Vector3(MoveDirection.x * RunSpeed, v.y, v.z);
+        rigidbody.velocity = new Vector3(MoveDirection.normalized.x * RunSpeed, v.y, v.z);
     }
 
     public void Jump()
@@ -102,7 +108,35 @@ public class Player : MonoBehaviour
 
     }
 
+    public void WallJump()
+    {
+        v = rigidbody.velocity;
+        float moveDirectionX = Input.GetAxis("Horizontal");
+        MoveDirection = new Vector2(moveDirectionX, 0);
+        MoveDirection.Normalize();
+        if (MoveDirection.x > 0)
+            rigidbody.velocity = new Vector3(JumpForce, JumpForce, v.z);
+        else if(MoveDirection.x <0)
+            rigidbody.velocity = new Vector3(-JumpForce, JumpForce, v.z);
+        //else if(MoveDirection.x == 0)
+        //{
+        //    rigidbody.velocity = new Vector3(-onWallDirection*JumpForce, JumpForce, v.z);
+        //}
+    }
 
+    public void WallClimb()
+    {
+        rigidbody.velocity = new Vector2(-onWallDirection*wallClimbF.x, wallClimbF.y);
+    }
+    public void WallOff()
+    {
+        rigidbody.velocity = new Vector2(-onWallDirection * wallOffF.x, wallOffF.y);
+    }
+
+    public void WallLeap()
+    {
+        rigidbody.velocity = new Vector2(-onWallDirection * wallLeapF.x, wallLeapF.y);
+    }
 
     public bool IsOnGround()
     {
@@ -117,6 +151,10 @@ public class Player : MonoBehaviour
         return onWallDirection;
     }
 
+    public bool WallSlide()
+    {
+        return wallSliding;
+    }
 
     //public bool IsIdle()
     //{
@@ -137,13 +175,25 @@ public class Player : MonoBehaviour
     void Update()
     {
         //Move(); 
-        StatePlayer.HandleInput();
-        //TODO  FIX JUMP
-        
         CheckIsOnGround();
         CheckIsOnWall();
+
+        
+        
+        wallSliding = false; //
+        if (OnWallDirection() != 0 && !IsOnGround() && rigidbody.velocity.y < 0)
+        {
+            wallSliding = true;
+            if (rigidbody.velocity.y < -wallSlideSpeed)
+            {
+                rigidbody.velocity = new Vector3(0, wallSlideSpeed - wallSlideSpeed, 0);
+            }
+        }
+        StatePlayer.HandleInput();
+        
     }
 
+  
     void CheckIsOnGround()
     {
         Debug.DrawRay(transform.position, Vector2.down * rayDistance, Color.red);
@@ -157,7 +207,7 @@ public class Player : MonoBehaviour
             isOnGround = false;
 
         }
-        Debug.Log("isOnGround: " + isOnGround);
+        //Debug.Log("isOnGround: " + isOnGround);
     }
 
     void CheckIsOnWall()
@@ -168,7 +218,7 @@ public class Player : MonoBehaviour
         RaycastHit2D hit2 = Physics2D.Raycast(transform.position, Vector2.right, rayDistance, 1 << LayerMask.NameToLayer("Wall"));
         if (hit.collider == null && hit2.collider == null)
         {
-            
+            onWallDirection = 0;
             isOnWall = false;
         }
         else if(hit.collider != null)
