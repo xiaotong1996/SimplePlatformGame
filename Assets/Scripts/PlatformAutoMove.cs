@@ -12,8 +12,8 @@ public class PlatformAutoMove : MonoBehaviour
     public Transform startPoint;
     [SerializeField]
     public Transform endPoint;
-    [SerializeField]
-    private float moveTime = 2f;
+    //[SerializeField]
+    //private float moveTime = 2f;
     [SerializeField]
     private float moveSpeed = 1f;
     /// <summary>

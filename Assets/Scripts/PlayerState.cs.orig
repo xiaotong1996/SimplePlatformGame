@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -175,7 +175,7 @@ public class RunState : PlayerBaseState
     public RunState(Player player)
     {
         this.player = player;
-        Debug.Log("Player in RunState");
+       Debug.Log("Player in RunState");
     }
 
 
@@ -233,6 +233,7 @@ public class OnAirState : PlayerBaseState
 
     public override void HandleInput()
     {
+        //Debug.Log("onwall"  + player.IsOnWall());
         float moveDirectionX = Input.GetAxis("Horizontal");
         if (player.IsOnGround() && moveDirectionX == 0)
         {
@@ -429,6 +430,13 @@ public class WallLeapState : PlayerBaseState
 {
     private Player player;
 
+<<<<<<< HEAD
+        if (Input.GetAxisRaw("Jump")==1 && (onWallDirection == -1 && moveDirectionX > 0 || (onWallDirection == 1) && moveDirectionX < 0))
+        {
+              
+            player.Jump();
+            player.StatePlayer = new JumpState(this.player);
+=======
     public WallLeapState(Player player)
     {
         this.player = player;
@@ -446,6 +454,7 @@ public class WallLeapState : PlayerBaseState
         if (player.IsOnGround())
         {
             player.StatePlayer = new IdleState(this.player);
+>>>>>>> Ruitong_dev
         }
         else if (player.IsOnWall() && Input.GetAxisRaw("Jump") == 0)
         {
