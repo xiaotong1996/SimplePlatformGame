@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Ground
   - Nail
+  - Ice
   layers:
   - Default
   - TransparentFX

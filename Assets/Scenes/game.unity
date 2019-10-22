@@ -6423,6 +6423,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ice
       objectReference: {fileID: 0}
+    - target: {fileID: 7534833034006830321, guid: c6c4a3d409289844aa34706d8ab57906,
+        type: 3}
+      propertyPath: m_TagString
+      value: Ice
+      objectReference: {fileID: 0}
     - target: {fileID: 3825771461659850450, guid: c6c4a3d409289844aa34706d8ab57906,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6631,6 +6636,16 @@ PrefabInstance:
         type: 3}
       propertyPath: wallLeapF.y
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6350873588411781054, guid: 596d52369fbe9824596a6e7def490499,
+        type: 3}
+      propertyPath: moveOnIceSpeed
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6350873588411781054, guid: 596d52369fbe9824596a6e7def490499,
+        type: 3}
+      propertyPath: runOnIceSpeed
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 50986346015819352, guid: 596d52369fbe9824596a6e7def490499,
         type: 3}

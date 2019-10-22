@@ -37,6 +37,12 @@ public class Player : MonoBehaviour
     private float runSpeed;
 
     [SerializeField]
+    private float moveOnIceSpeed;
+
+    [SerializeField]
+    private float runOnIceSpeed;
+
+    [SerializeField]
     private float jumpForce;
 
     public StateEnv StatePlayerEnvironment { set; get; }
@@ -52,6 +58,10 @@ public class Player : MonoBehaviour
 
     public float RunSpeed { get => runSpeed; set => runSpeed = value; }
 
+    public float MoveOnIceSpeed { get => moveOnIceSpeed; set => moveOnIceSpeed = value; }
+
+    public float RunOnIceSpeed { get => runOnIceSpeed; set => runOnIceSpeed = value; }
+
     public float JumpForce { get => jumpForce; set => jumpForce = value; }
 
     public PlayerBaseState StatePlayer { get => statePlayer; set => statePlayer = value; }
@@ -60,7 +70,7 @@ public class Player : MonoBehaviour
 
     private new Rigidbody2D rigidbody;
     private Vector3 v;
-    public float wallSlideSpeed = 2f;
+    public float wallSlideSpeed = 1f;
     
     private bool isOnGround;
     private bool isOnWall;
@@ -72,6 +82,9 @@ public class Player : MonoBehaviour
     public Vector2 wallOffF;
     public Vector2 wallLeapF;
     private bool wallSliding = false;
+
+
+    private bool isOnIce = false;
 
     public void Move()
     {
@@ -86,7 +99,19 @@ public class Player : MonoBehaviour
         //transform.Translate(new Vector2(MoveDirection.x, MoveDirection.y) * MoveSpeed * Time.deltaTime);
         //rigidbody.AddForce(new Vector2(MoveDirection.x, 0) * MoveSpeed , ForceMode2D.Impulse);
         v = rigidbody.velocity;
-        rigidbody.velocity = new Vector3(MoveDirection.normalized.x * MoveSpeed, v.y, v.z);
+        rigidbody.velocity = new Vector3(MoveDirection.normalized.x * MoveOnAirSpeed, v.y, v.z);
+    }
+
+    public void MoveOnIce()
+    {
+        v = rigidbody.velocity;
+        rigidbody.velocity = new Vector3(MoveDirection.normalized.x * MoveOnIceSpeed, v.y, v.z);
+    }
+
+    public void RunOnIce()
+    {
+        v = rigidbody.velocity;
+        rigidbody.velocity = new Vector3(MoveDirection.normalized.x * RunOnIceSpeed, v.y, v.z);
     }
 
     public void Idle()
@@ -98,7 +123,7 @@ public class Player : MonoBehaviour
     public void Run()
     {
         v = rigidbody.velocity;
-        rigidbody.velocity = new Vector3(MoveDirection.normalized.x * RunSpeed, v.y, v.z);
+        rigidbody.velocity = new Vector3(MoveDirection.normalized.x * MoveOnIceSpeed, v.y, v.z);
     }
 
     public void Jump()
@@ -156,6 +181,10 @@ public class Player : MonoBehaviour
         return wallSliding;
     }
 
+    public bool IsOnIce()
+    {
+        return isOnIce;
+    }
     //public bool IsIdle()
     //{
     //    Debug.Log(rigidbody.velocity.x);
@@ -184,16 +213,32 @@ public class Player : MonoBehaviour
         if (OnWallDirection() != 0 && !IsOnGround() && rigidbody.velocity.y < 0)
         {
             wallSliding = true;
+            //Debug.Log(rigidbody.velocity.y);
             if (rigidbody.velocity.y < -wallSlideSpeed)
             {
-                rigidbody.velocity = new Vector3(0, wallSlideSpeed - wallSlideSpeed, 0);
+                rigidbody.velocity = new Vector3(0, -wallSlideSpeed, 0);
             }
+            //Debug.Log("dd" + rigidbody.velocity.y);
         }
         StatePlayer.HandleInput();
         
     }
 
-  
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.tag == "Ice")
+        {
+            isOnIce = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if(collision.tag == "Ice")
+        {
+            isOnIce = false;
+        }
+    }
     void CheckIsOnGround()
     {
         Debug.DrawRay(transform.position, Vector2.down * rayDistance, Color.red);
