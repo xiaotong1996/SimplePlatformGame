@@ -84,7 +84,10 @@ public class JumpState : PlayerBaseState
     {
         Debug.Log(Input.GetAxisRaw("Jump"));
         
-        
+        if(player.IsDeath)
+        {
+            player.StatePlayer = new DeathState(this.player);
+        }
         if (!player.IsOnGround()&& Input.GetAxisRaw("Jump") == 0 )
         {
 
@@ -140,6 +143,11 @@ public class MoveState : PlayerBaseState
 
     public override void HandleInput()
     {
+        if (player.IsDeath)
+        {
+            player.StatePlayer = new DeathState(this.player);
+        }
+
         if (player.IsOnGround()&& Input.GetAxis("Horizontal")==0)
         {
             //Debug.Log("player fall on ground");
@@ -211,6 +219,10 @@ public class RunState : PlayerBaseState
 
     public override void HandleInput()
     {
+        if (player.IsDeath)
+        {
+            player.StatePlayer = new DeathState(this.player);
+        }
         if (player.IsOnGround() && Input.GetAxis("Horizontal")==0)
         {
             //Debug.Log("player fall on ground");
@@ -270,6 +282,11 @@ public class OnAirState : PlayerBaseState
 
     public override void HandleInput()
     {
+
+        if (player.IsDeath)
+        {
+            player.StatePlayer = new DeathState(this.player);
+        }
         float moveDirectionX = Input.GetAxis("Horizontal");
         if (player.IsOnGround() && moveDirectionX == 0)
         {
@@ -321,6 +338,11 @@ public class MoveOnAirState : PlayerBaseState
 
     public override void HandleInput()
     {
+
+        if (player.IsDeath)
+        {
+            player.StatePlayer = new DeathState(this.player);
+        }
         if (player.IsOnGround())
         {
             //Debug.Log("player fall on ground");
@@ -370,6 +392,11 @@ public class DoubleJumpState : PlayerBaseState
 
     public override void HandleInput()
     {
+
+        if (player.IsDeath)
+        {
+            player.StatePlayer = new DeathState(this.player);
+        }
         if (player.IsOnGround())
         {
             // Debug.Log("player fall on ground");
@@ -412,6 +439,10 @@ public class WallClimbState : PlayerBaseState
 
     public override void HandleInput()
     {
+        if (player.IsDeath)
+        {
+            player.StatePlayer = new DeathState(this.player);
+        }
         Vector2 moveDirection = new Vector2(Input.GetAxis("Horizontal"), 0);
         if(player.IsOnWall()&& Input.GetAxisRaw("Jump") == 0)
         {
@@ -445,6 +476,10 @@ public class WallOffState: PlayerBaseState
 
     public override void HandleInput()
     {
+        if (player.IsDeath)
+        {
+            player.StatePlayer = new DeathState(this.player);
+        }
         Vector2 moveDirection = new Vector2(Input.GetAxis("Horizontal"), 0);
         if(player.IsOnGround())
         {
@@ -479,6 +514,10 @@ public class WallLeapState : PlayerBaseState
 
     public override void HandleInput()
     {
+        if (player.IsDeath)
+        {
+            player.StatePlayer = new DeathState(this.player);
+        }
         Vector2 moveDirection = new Vector2(Input.GetAxis("Horizontal"), 0);
         if (player.IsOnGround())
         {
@@ -516,6 +555,10 @@ public class OnWallState : PlayerBaseState
 
     public override void HandleInput()
     {
+        if (player.IsDeath)
+        {
+            player.StatePlayer = new DeathState(this.player);
+        }
         Vector2 moveDirection = new Vector2(Input.GetAxis("Horizontal"), 0);
         if(player.IsOnGround())
         {
@@ -570,6 +613,10 @@ public class MoveOnIceState : PlayerBaseState
 
     public override void HandleInput()
     {
+        if (player.IsDeath)
+        {
+            player.StatePlayer = new DeathState(this.player);
+        }
         if (player.IsOnGround() && Input.GetAxis("Horizontal") == 0)
         {
             //Debug.Log("player fall on ground");
@@ -647,7 +694,10 @@ public class RunOnIceState : PlayerBaseState
     public override void HandleInput()
     {
 
-        
+        if (player.IsDeath)
+        {
+            player.StatePlayer = new DeathState(this.player);
+        }
         if (player.IsOnGround() && Input.GetAxis("Horizontal") == 0)
         {
             //Debug.Log("player fall on ground");
@@ -695,4 +745,28 @@ public class RunOnIceState : PlayerBaseState
 }
 
 
+public class DeathState : PlayerBaseState
+{
+    private Player player;
 
+    public DeathState(Player player)
+    {
+        this.player = player;
+        Debug.Log("Player in Deathdtate");
+    }
+
+    public override void HandleInput()
+    {
+        player.Reborn();
+        
+        Debug.Log("1111111");
+        if (player.transform.position == player.StartPoint.position)
+        {
+            player.StatePlayer = new IdleState(this.player);
+        }
+    }
+    public override void Update()
+    {
+        
+    }
+}

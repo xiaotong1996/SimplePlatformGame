@@ -73,6 +73,8 @@ public class Player : MonoBehaviour
     public float wallSlideSpeed = 1f;
     
     private bool isOnGround;
+    private bool isDeath;
+    public bool IsDeath { get => isDeath; set => isDeath = value; }
     private bool isOnWall;
     private int onWallDirection = 0; //1-->left  -1 -->right;
    
@@ -82,8 +84,8 @@ public class Player : MonoBehaviour
     public Vector2 wallOffF;
     public Vector2 wallLeapF;
     private bool wallSliding = false;
-
-
+    private Transform startPoint;
+    public Transform StartPoint { get => startPoint; set => startPoint = value; }
     private bool isOnIce = false;
 
     public void Move()
@@ -132,7 +134,11 @@ public class Player : MonoBehaviour
         rigidbody.velocity = new Vector3(v.x, JumpForce, v.z);
 
     }
-
+    public void Reborn()
+    {
+        isDeath = false;
+        gameObject.transform.position = startPoint.position;
+    }
     public void WallJump()
     {
         v = rigidbody.velocity;
@@ -198,6 +204,7 @@ public class Player : MonoBehaviour
     {
         rigidbody = gameObject.GetComponent<Rigidbody2D>();
         StatePlayer = new IdleState(this);
+        startPoint = GameObject.FindGameObjectWithTag("StartPoint").transform;
         Physics2D.gravity = new Vector2(0, Gravity);
 
     }
@@ -207,7 +214,7 @@ public class Player : MonoBehaviour
         CheckIsOnGround();
         CheckIsOnWall();
 
-        
+
         
         wallSliding = false; //
         if (OnWallDirection() != 0 && !IsOnGround() && rigidbody.velocity.y < 0)
@@ -229,6 +236,10 @@ public class Player : MonoBehaviour
         if(collision.tag == "Ice")
         {
             isOnIce = true;
+        }
+        if(collision.tag == "Nail")
+        {
+            IsDeath = true;
         }
     }
 

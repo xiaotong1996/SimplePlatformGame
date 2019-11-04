@@ -7,6 +7,7 @@ TagManager:
   - Ground
   - Nail
   - Ice
+  - StartPoint
   layers:
   - Default
   - TransparentFX
