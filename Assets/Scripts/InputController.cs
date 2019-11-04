@@ -104,7 +104,7 @@ public class InputController : MonoBehaviour
             fsm.HandleEvent("runToJump");
         }
 
-        if(player.IsOnGround())
+        if(player.IsOnGround)
         {
             fsm.HandleEvent("jumpToIdle");
         }
