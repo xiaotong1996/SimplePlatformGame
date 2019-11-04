@@ -34,23 +34,27 @@ public class IdleState : PlayerBaseState
     public IdleState(Player player)
     {
         this.player = player;
-        //Debug.Log("Player in IdleState");
+        Debug.Log("Player in IdleState");
     }
 
 
     public override void Update()
     {
-        
+
     }
 
     public override void HandleInput()
     {
+        if (player.IsDeath)
+        {
+            player.StatePlayer = new DeathState(this.player);
+        }
         //Input.GetKeyDown(KeyCode.Joystick1Button0)
-        if (Input.GetAxisRaw("Jump")==1)
+        if (Input.GetAxisRaw("Jump") == 1)
         {
             //Debug.Log("get keyCode.Space");
             player.Jump();
-            player.StatePlayer=new JumpState(this.player);
+            player.StatePlayer = new JumpState(this.player);
         }
         float moveDirectionX = Input.GetAxis("Horizontal");
         if (moveDirectionX != 0)
@@ -77,50 +81,50 @@ public class JumpState : PlayerBaseState
 
     public override void Update()
     {
-        
+
     }
 
     public override void HandleInput()
     {
-        Debug.Log(Input.GetAxisRaw("Jump"));
-        
-        if(player.IsDeath)
+
+        if (player.IsDeath) 
         {
             player.StatePlayer = new DeathState(this.player);
         }
-        if (!player.IsOnGround()&& Input.GetAxisRaw("Jump") == 0 )
+        //Debug.Log(Input.GetAxis("Jump"));
+        //Debug.Log(Input.GetAxisRaw("Jump"));
+        if (!player.IsOnGround && Input.GetAxisRaw("Jump") == 0)
+        //if (!player.IsOnGround()&&(Input.GetKeyUp(KeyCode.Space)||Input.GetKeyUp(KeyCode.Joystick1Button0)))
+        //if (Input.GetKeyUp(KeyCode.Space)||Input.GetKeyUp(KeyCode.Joystick1Button0))
         {
 
-            if(player.WallSlide())
+            if (player.WallSliding)
             {
                 player.StatePlayer = new OnWallState(this.player);
             }
             else
             {
-               
+
                 player.StatePlayer = new OnAirState(this.player);
             }
-           
+
         }
-        else 
+        if(player.IsOnGround)
         {
-            float moveDirectionX = Input.GetAxis("Horizontal");
-            if (moveDirectionX != 0)
-            {
-                player.MoveDirection = new Vector2(moveDirectionX, 0);
-                if (player.IsOnIce())
-                {
-                    player.MoveOnIce();
-                    player.StatePlayer = new MoveOnIceState(this.player);
-                }
-                else
-                {
-                    player.Move();
-                    player.StatePlayer = new MoveState(this.player);
-                }
-            }
+            player.StatePlayer = new IdleState(this.player);
         }
-        
+        //else
+        //{
+        //    Debug.Log("error");
+        //    float moveDirectionX = Input.GetAxis("Horizontal");
+        //    if (moveDirectionX != 0)
+        //    {
+        //        player.MoveDirection = new Vector2(moveDirectionX, 0);
+        //        player.Move();
+        //        player.StatePlayer = new MoveState(this.player);
+        //    }
+        //}
+
     }
 }
 
@@ -138,7 +142,7 @@ public class MoveState : PlayerBaseState
 
     public override void Update()
     {
-        
+
     }
 
     public override void HandleInput()
@@ -147,21 +151,20 @@ public class MoveState : PlayerBaseState
         {
             player.StatePlayer = new DeathState(this.player);
         }
-
-        if (player.IsOnGround()&& Input.GetAxis("Horizontal")==0)
+        if (player.IsOnGround && Input.GetAxis("Horizontal") == 0)
         {
             //Debug.Log("player fall on ground");
             player.StatePlayer = new IdleState(this.player);
         }
 
-       
-        if (!player.IsOnGround())
+
+        if (!player.IsOnGround)
         {
             //Debug.Log("player is on air");
             player.StatePlayer = new OnAirState(this.player);
         }
-       
-        if (Input.GetAxisRaw("Jump")==1 && player.IsOnGround())
+
+        if (Input.GetAxisRaw("Jump") == 1 && player.IsOnGround)
         {
             //Debug.Log("get keyCode.Space");
             player.Jump();
@@ -173,13 +176,13 @@ public class MoveState : PlayerBaseState
             player.MoveDirection = new Vector2(moveDirectionX, 0);
 
 
-           
+
             //player.StatePlayer = new MoveState(this.player);
             if (Input.GetAxis("Run") > 0)
             {
-                if (player.IsOnIce())
+                if (player.IsOnIce)
                 {
-                    Debug.Log("!1");
+
                     player.StatePlayer = new RunOnIceState(this.player);
                 }
                 else
@@ -190,11 +193,11 @@ public class MoveState : PlayerBaseState
             }
             else
             {
-                if (player.IsOnIce())
+                if (player.IsOnIce)
                 {
                     player.StatePlayer = new MoveOnIceState(this.player);
                 }
-                else 
+                else
                     player.Move();
             }
         }
@@ -223,12 +226,12 @@ public class RunState : PlayerBaseState
         {
             player.StatePlayer = new DeathState(this.player);
         }
-        if (player.IsOnGround() && Input.GetAxis("Horizontal")==0)
+        if (player.IsOnGround && Input.GetAxis("Horizontal") == 0)
         {
             //Debug.Log("player fall on ground");
             player.StatePlayer = new IdleState(this.player);
         }
-        if (Input.GetAxisRaw("Jump")==1&&player.IsOnGround())
+        if (Input.GetAxisRaw("Jump") == 1 && player.IsOnGround)
         {
             //Debug.Log("get keyCode.Space");
             player.Jump();
@@ -242,7 +245,7 @@ public class RunState : PlayerBaseState
             //player.StatePlayer = new MoveState(this.player);
             if (Input.GetAxis("Run") > 0)
             {
-                if(player.IsOnIce())
+                if (player.IsOnIce)
                 {
                     player.RunOnIce();
                     player.StatePlayer = new RunOnIceState(this.player);
@@ -252,7 +255,7 @@ public class RunState : PlayerBaseState
             }
             else
             {
-                if (player.IsOnIce())
+                if (player.IsOnIce)
                 {
                     player.MoveOnIce();
                     player.StatePlayer = new MoveOnIceState(this.player);
@@ -282,21 +285,20 @@ public class OnAirState : PlayerBaseState
 
     public override void HandleInput()
     {
-
         if (player.IsDeath)
         {
             player.StatePlayer = new DeathState(this.player);
         }
         float moveDirectionX = Input.GetAxis("Horizontal");
-        if (player.IsOnGround() && moveDirectionX == 0)
+        if (player.IsOnGround && moveDirectionX == 0)
         {
-            Debug.Log("aaaaaaaaa");
+            Debug.Log("Idle");
             player.StatePlayer = new IdleState(this.player);
         }
-        
-        else if (player.IsOnWall())
+
+        else if (player.IsOnWall)
         {
-            //Debug.Log("bbbbbbbbbb");
+            //Debug.Log("OnWall");
             player.StatePlayer = new OnWallState(this.player);
         }
         else if (moveDirectionX != 0)
@@ -312,8 +314,8 @@ public class OnAirState : PlayerBaseState
             player.Jump();
             player.StatePlayer = new DoubleJumpState(this.player);
         }
-        
-        
+
+
 
     }
 }
@@ -338,17 +340,16 @@ public class MoveOnAirState : PlayerBaseState
 
     public override void HandleInput()
     {
-
         if (player.IsDeath)
         {
             player.StatePlayer = new DeathState(this.player);
         }
-        if (player.IsOnGround())
+        if (player.IsOnGround)
         {
             //Debug.Log("player fall on ground");
             player.StatePlayer = new IdleState(this.player);
         }
-        else if (player.IsOnWall())
+        else if (player.IsOnWall)
         {
             player.StatePlayer = new OnWallState(this.player);
         }
@@ -370,7 +371,7 @@ public class MoveOnAirState : PlayerBaseState
 
             }
         }
-        
+
     }
 }
 
@@ -392,17 +393,16 @@ public class DoubleJumpState : PlayerBaseState
 
     public override void HandleInput()
     {
-
         if (player.IsDeath)
         {
             player.StatePlayer = new DeathState(this.player);
         }
-        if (player.IsOnGround())
+        if (player.IsOnGround)
         {
             // Debug.Log("player fall on ground");
             player.StatePlayer = new IdleState(this.player);
         }
-        else if (player.IsOnWall())
+        else if (player.IsOnWall)
         {
             player.StatePlayer = new OnWallState(this.player);
         }
@@ -416,7 +416,7 @@ public class DoubleJumpState : PlayerBaseState
                 //player.StatePlayer = new MoveState(this.player);
             }
         }
-        
+
     }
 }
 
@@ -434,7 +434,7 @@ public class WallClimbState : PlayerBaseState
 
     public override void Update()
     {
-        
+
     }
 
     public override void HandleInput()
@@ -444,22 +444,22 @@ public class WallClimbState : PlayerBaseState
             player.StatePlayer = new DeathState(this.player);
         }
         Vector2 moveDirection = new Vector2(Input.GetAxis("Horizontal"), 0);
-        if(player.IsOnWall()&& Input.GetAxisRaw("Jump") == 0)
+        if (player.IsOnWall && Input.GetAxisRaw("Jump") == 0)
         {
             player.StatePlayer = new OnWallState(this.player);
         }
-        else if (player.IsOnGround())
+        else if (player.IsOnGround)
         {
             player.StatePlayer = new IdleState(this.player);
         }
-        else if (!player.IsOnGround() && !player.IsOnWall())
+        else if (!player.IsOnGround && !player.IsOnWall)
         {
             player.StatePlayer = new OnAirState(this.player);
         }
     }
 }
 
-public class WallOffState: PlayerBaseState
+public class WallOffState : PlayerBaseState
 {
     private Player player;
 
@@ -481,19 +481,19 @@ public class WallOffState: PlayerBaseState
             player.StatePlayer = new DeathState(this.player);
         }
         Vector2 moveDirection = new Vector2(Input.GetAxis("Horizontal"), 0);
-        if(player.IsOnGround())
+        if (player.IsOnGround)
         {
             player.StatePlayer = new IdleState(this.player);
         }
-        else if(player.IsOnWall() && Input.GetAxisRaw("Jump") == 0)
+        else if (player.IsOnWall && Input.GetAxisRaw("Jump") == 0)
         {
             player.StatePlayer = new OnWallState(this.player);
         }
-        else if(!player.IsOnGround()&&!player.IsOnWall())
+        else if (!player.IsOnGround && !player.IsOnWall)
         {
             player.StatePlayer = new OnAirState(this.player);
         }
-        
+
     }
 }
 
@@ -519,11 +519,11 @@ public class WallLeapState : PlayerBaseState
             player.StatePlayer = new DeathState(this.player);
         }
         Vector2 moveDirection = new Vector2(Input.GetAxis("Horizontal"), 0);
-        if (player.IsOnGround())
+        if (player.IsOnGround)
         {
             player.StatePlayer = new IdleState(this.player);
         }
-        else if (player.IsOnWall() && Input.GetAxisRaw("Jump") == 0)
+        else if (player.IsOnWall && Input.GetAxisRaw("Jump") == 0)
         {
             player.StatePlayer = new OnWallState(this.player);
         }
@@ -555,21 +555,25 @@ public class OnWallState : PlayerBaseState
 
     public override void HandleInput()
     {
+        
         if (player.IsDeath)
         {
             player.StatePlayer = new DeathState(this.player);
         }
         Vector2 moveDirection = new Vector2(Input.GetAxis("Horizontal"), 0);
-        if(player.IsOnGround())
+        Debug.Log(moveDirection.normalized.x);
+        Debug.Log("b" + player.OnWallDirection);
+        if (player.IsOnGround)
         {
-            
+
             player.StatePlayer = new IdleState(this.player);
         }
-        else if (Input.GetAxisRaw("Jump") == 1 )
+        else if (Input.GetAxisRaw("Jump") == 1)
         {
 
             if (moveDirection.normalized.x == 0)
             {
+                Debug.Log("in 1");
                 player.WallOff();
                 player.StatePlayer = new WallOffState(this.player);
             }
@@ -578,25 +582,28 @@ public class OnWallState : PlayerBaseState
             //    player.WallClimb();
             //    player.StatePlayer = new WallClimbState(this.player);
             //}
-            else if(player.OnWallDirection() == -moveDirection.normalized.x)
+            else if (player.OnWallDirection == -moveDirection.normalized.x)
             {
+                Debug.Log("in 2");
                 player.WallLeap();
                 player.StatePlayer = new WallLeapState(this.player);
             }
         }
 
-        /////off the wall by wasd
-        //else
-        //{
-        //    if (moveDirection.normalized.x == -player.OnWallDirection())
-        //    {
-        //        //    Debug.Log("oushhh");
-        //        player.WallOff();
-        //        player.StatePlayer = new WallOffState(this.player);
-        //    }
-        //}
+        /////off the wall by wasd  TODECIDE
+        else if (moveDirection.normalized.x != 0 && moveDirection.normalized.x == -player.OnWallDirection)
+        {
+            Debug.Log(moveDirection.normalized.x);
+            Debug.Log("a" + player.OnWallDirection);
+            Debug.Log("in 3");
+                //    Debug.Log("oushhh");
+                player.WallOff2();
+                player.StatePlayer = new WallOffState(this.player);
+            
+        }
 
 
+      
 
     }
 }
@@ -617,20 +624,20 @@ public class MoveOnIceState : PlayerBaseState
         {
             player.StatePlayer = new DeathState(this.player);
         }
-        if (player.IsOnGround() && Input.GetAxis("Horizontal") == 0)
+        if (player.IsOnGround && Input.GetAxis("Horizontal") == 0)
         {
             //Debug.Log("player fall on ground");
             player.StatePlayer = new IdleState(this.player);
         }
 
 
-        if (!player.IsOnGround())
+        if (!player.IsOnGround)
         {
             //Debug.Log("player is on air");
             player.StatePlayer = new OnAirState(this.player);
         }
 
-        if (Input.GetAxisRaw("Jump") == 1 && player.IsOnGround())
+        if (Input.GetAxisRaw("Jump") == 1 && player.IsOnGround)
         {
             //Debug.Log("get keyCode.Space");
             player.Jump();
@@ -646,7 +653,7 @@ public class MoveOnIceState : PlayerBaseState
             //player.StatePlayer = new MoveState(this.player);
             if (Input.GetAxis("Run") > 0)
             {
-                if (player.IsOnIce())
+                if (player.IsOnIce)
                 {
                     player.RunOnIce();
                     player.StatePlayer = new RunOnIceState(this.player);
@@ -659,16 +666,16 @@ public class MoveOnIceState : PlayerBaseState
             }
             else
             {
-                if (!player.IsOnIce())
+                if (!player.IsOnIce)
                 {
                     player.StatePlayer = new MoveState(this.player);
                 }
                 else
                 {
-                    
+
                     player.MoveOnIce();
                 }
-                    
+
             }
         }
 
@@ -698,12 +705,12 @@ public class RunOnIceState : PlayerBaseState
         {
             player.StatePlayer = new DeathState(this.player);
         }
-        if (player.IsOnGround() && Input.GetAxis("Horizontal") == 0)
+        if (player.IsOnGround && Input.GetAxis("Horizontal") == 0)
         {
             //Debug.Log("player fall on ground");
             player.StatePlayer = new IdleState(this.player);
         }
-        if (Input.GetAxisRaw("Jump") == 1 && player.IsOnGround())
+        if (Input.GetAxisRaw("Jump") == 1 && player.IsOnGround)
         {
             //Debug.Log("get keyCode.Space");
             player.Jump();
@@ -717,7 +724,7 @@ public class RunOnIceState : PlayerBaseState
             //player.StatePlayer = new MoveState(this.player);
             if (Input.GetAxis("Run") > 0)
             {
-                if (!player.IsOnIce())
+                if (!player.IsOnIce)
                 {
                     player.Run();
                     player.StatePlayer = new RunState(this.player);
@@ -727,7 +734,7 @@ public class RunOnIceState : PlayerBaseState
             }
             else
             {
-                if(!player.IsOnIce())
+                if (!player.IsOnIce)
                     player.StatePlayer = new MoveState(this.player);
                 else
                 {
@@ -745,6 +752,7 @@ public class RunOnIceState : PlayerBaseState
 }
 
 
+
 public class DeathState : PlayerBaseState
 {
     private Player player;
@@ -758,15 +766,16 @@ public class DeathState : PlayerBaseState
     public override void HandleInput()
     {
         player.Reborn();
+
         
-        Debug.Log("1111111");
-        if (player.transform.position == player.StartPoint.position)
+        if (player.IsReborn)
         {
             player.StatePlayer = new IdleState(this.player);
         }
     }
     public override void Update()
     {
-        
+
     }
 }
+

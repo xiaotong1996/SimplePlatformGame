@@ -8,6 +8,7 @@ TagManager:
   - Nail
   - Ice
   - StartPoint
+  - PointFinal
   layers:
   - Default
   - TransparentFX
