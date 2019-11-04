@@ -31,6 +31,7 @@ public abstract class PlayerBaseState
 
 public class IdleState : PlayerBaseState
 {
+    
     private Player player;
 
     public IdleState(Player player)
@@ -56,6 +57,7 @@ public class IdleState : PlayerBaseState
         {
             //Debug.Log("get keyCode.Space");
             player.Jump();
+           
             player.StatePlayer = new JumpState(this.player);
         }
         float moveDirectionX = Input.GetAxis("Horizontal");

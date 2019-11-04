@@ -89,6 +89,7 @@ public class Player : MonoBehaviour
     private bool isOnGround;
     private bool isOnWall;
     private bool isDeath;
+    private bool isWin;
     private bool isReborn;
     private int onWallDirection = 0; //1-->left  -1 -->right;
     public bool WallSliding { get => wallSliding; set => wallSliding = value; }
@@ -101,6 +102,7 @@ public class Player : MonoBehaviour
     
     public bool IsDeath { get => isDeath; set => isDeath = value; }
     public bool IsReborn { get => isReborn; set => isReborn = value; }
+    public bool IsWin { get => isWin; set => isWin = value; }
 
     public void Idle()
     {
@@ -226,6 +228,11 @@ public class Player : MonoBehaviour
         {
             IsDeath = true;
             IsReborn = false;
+        }
+        if(collision.tag == "PointFinal")
+        {
+            IsWin = true;
+            Reborn();
         }
         
     }

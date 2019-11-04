@@ -375,6 +375,7 @@ Transform:
   - {fileID: 1267976883}
   - {fileID: 2136532502}
   - {fileID: 1170218528}
+  - {fileID: 8494482915259819744}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1148,6 +1149,7 @@ GameObject:
   m_Component:
   - component: {fileID: 452686551}
   - component: {fileID: 452686550}
+  - component: {fileID: 452686552}
   m_Layer: 0
   m_Name: PFinal
   m_TagString: PointFinal
@@ -1217,6 +1219,32 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &452686552
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 452686549}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!1001 &457390913
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2935,7 +2963,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startPoint: {fileID: 660140562}
   endPoint: {fileID: 1779329504}
-  moveTime: 2
   moveSpeed: 3
   isArrive: 0
 --- !u!4 &1193996905 stripped
@@ -6487,12 +6514,12 @@ PrefabInstance:
     - target: {fileID: 6443540524980617843, guid: 596d52369fbe9824596a6e7def490499,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -8.28
+      value: 5.84
       objectReference: {fileID: 0}
     - target: {fileID: 6443540524980617843, guid: 596d52369fbe9824596a6e7def490499,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.25
+      value: -4.31
       objectReference: {fileID: 0}
     - target: {fileID: 6443540524980617843, guid: 596d52369fbe9824596a6e7def490499,
         type: 3}
