@@ -196,8 +196,9 @@ public class Player : MonoBehaviour
         CheckIsOnGround();
         CheckIsOnWall();
 
+        StopMove();
 
-        
+
         WallSliding = false; //
         if (OnWallDirection != 0 && !IsOnGround && rigidbody.velocity.y < 0)
         {
@@ -286,6 +287,14 @@ public class Player : MonoBehaviour
 
         }
 
+    }
+
+    void StopMove()
+    {
+        if(IsOnGround && Input.GetAxis("Horizontal") == 0)
+        {
+            rigidbody.velocity = new Vector2(0, 0);
+        }
     }
 
     
