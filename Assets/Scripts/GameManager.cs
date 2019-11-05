@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
         {
             LoadLevel("game0");
         }
-        if(Input.GetAxisRaw("Run") == 0)
+        if(Input.GetAxisRaw("Run") == 1)
         {
             Quit();
         }
