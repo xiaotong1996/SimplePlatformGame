@@ -28,12 +28,19 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(Input.GetAxisRaw("Jump") == 1)
+        {
+            LoadLevel("game0");
+        }
+        if(Input.GetAxisRaw("Run") == 0)
+        {
+            Quit();
+        }
     }
 
     public void LoadLevel(string name)
 	{
-        Debug.Log("11111111111win2");
+        
         SceneManager.LoadScene(name);
     }
 
