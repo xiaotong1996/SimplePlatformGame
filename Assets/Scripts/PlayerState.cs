@@ -80,6 +80,7 @@ public class JumpState : PlayerBaseState
     {
         this.player = player;
         Debug.Log("Player in JumpState");
+        SoundManager.Instance.PlayAudioByName("jump");
     }
 
 
@@ -386,6 +387,7 @@ public class DoubleJumpState : PlayerBaseState
     public DoubleJumpState(Player player)
     {
         this.player = player;
+        SoundManager.Instance.PlayAudioByName("jump");
         Debug.Log("Player in DoubleJumpState");
     }
 
@@ -574,7 +576,7 @@ public class OnWallState : PlayerBaseState
         }
         else if (Input.GetAxisRaw("Jump") == 1)
         {
-
+            SoundManager.Instance.PlayAudioByName("jump");
             if (moveDirection.normalized.x == 0)
             {
                 Debug.Log("in 1");

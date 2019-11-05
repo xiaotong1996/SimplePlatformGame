@@ -10,6 +10,7 @@ TagManager:
   - StartPoint
   - PointFinal
   - Conveyor belt
+  - Water
   layers:
   - Default
   - TransparentFX

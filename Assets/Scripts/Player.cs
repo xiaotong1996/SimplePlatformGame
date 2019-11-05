@@ -109,7 +109,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private  string nextScene;
     public string NextScene { get => nextScene; set => nextScene = value; }
-    [SerializeField]
+    private bool isInWater;
     public void Idle()
     {
 
@@ -191,11 +191,13 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
+        //
         rigidbody = gameObject.GetComponent<Rigidbody2D>();
         StatePlayer = new IdleState(this);
         Physics2D.gravity = new Vector2(0, Gravity);
         startPoint = GameObject.FindGameObjectWithTag("StartPoint").transform;
     }
+  
     void Update()
     {
         //Move(); 
@@ -225,7 +227,7 @@ public class Player : MonoBehaviour
         if (collision.collider.tag == "Conveyor belt")
         {
             Debug.Log("is on belt");
-
+            SoundManager.Instance.PlayMusicByName("gear");
             IsOnBelt = true;
         }
     }
@@ -244,6 +246,7 @@ public class Player : MonoBehaviour
         if (collision.tag == "Nail")
         {
             IsDeath = true;
+            SoundManager.Instance.PlayAudioByName("death");
             IsReborn = false;
         }
         if(collision.tag == "PointFinal")
@@ -253,6 +256,11 @@ public class Player : MonoBehaviour
             SceneManager.LoadScene(NextScene);
             //Reborn();
         } 
+        if(collision.tag == "Water")
+        {
+            isInWater = true;
+            SoundManager.Instance.PlayMusicByName("water");
+        }
         
     }
 
@@ -261,7 +269,9 @@ public class Player : MonoBehaviour
         if (collision.collider.tag == "Conveyor belt")
         {
             IsOnBelt = false;
+            SoundManager.Instance.StopPlay("gear");
         }
+      
         
     }
 
@@ -270,6 +280,10 @@ public class Player : MonoBehaviour
         if (collision.tag == "Ice")
         {
             isOnIce = false;
+        }
+        if(collision.tag == "Water")
+        {
+            SoundManager.Instance.StopPlay("water");
         }
         
     }
