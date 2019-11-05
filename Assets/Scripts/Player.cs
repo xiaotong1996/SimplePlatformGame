@@ -105,7 +105,7 @@ public class Player : MonoBehaviour
     public bool IsReborn { get => isReborn; set => isReborn = value; }
     public bool IsWin { get => isWin; set => isWin = value; }
     public bool IsOnBelt { get => isOnBelt; set => isOnBelt = value; }
-
+    public string nextScene;
     public void Idle()
     {
 
@@ -245,6 +245,7 @@ public class Player : MonoBehaviour
         if(collision.tag == "PointFinal")
         {
             IsWin = true;
+            
             Reborn();
         } 
         

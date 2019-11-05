@@ -5,6 +5,20 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+
+    private static GameManager instance;
+    public static GameManager Instance
+    {
+        get;
+        private set;
+
+    }
+    private void Awake()
+    {
+        Debug.Assert(GameManager.Instance == null);
+        GameManager.Instance = this;
+
+    }
     // Start is called before the first frame update
     void Start()
     {
