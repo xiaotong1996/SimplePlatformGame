@@ -595,16 +595,16 @@ public class OnWallState : PlayerBaseState
         }
 
         /////off the wall by wasd  TODECIDE
-        else if (moveDirection.normalized.x != 0 && moveDirection.normalized.x == -player.OnWallDirection)
-        {
-            Debug.Log(moveDirection.normalized.x);
-            Debug.Log("a" + player.OnWallDirection);
-            Debug.Log("in 3");
-                //    Debug.Log("oushhh");
-                player.WallOff2();
-                player.StatePlayer = new WallOffState(this.player);
+        //else if (moveDirection.normalized.x != 0 && moveDirection.normalized.x == -player.OnWallDirection)
+        //{
+        //    Debug.Log(moveDirection.normalized.x);
+        //    Debug.Log("a" + player.OnWallDirection);
+        //    Debug.Log("in 3");
+        //        //    Debug.Log("oushhh");
+        //        player.WallOff2();
+        //        player.StatePlayer = new WallOffState(this.player);
             
-        }
+        //}
 
 
       
