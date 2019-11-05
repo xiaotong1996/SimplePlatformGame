@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour
 
     public void LoadLevel(string name)
 	{
+        Debug.Log("11111111111win2");
         SceneManager.LoadScene(name);
     }
 

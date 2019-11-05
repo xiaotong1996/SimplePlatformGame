@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Enum <c>StateEnv</c> represents player is in which environment.
@@ -105,7 +106,10 @@ public class Player : MonoBehaviour
     public bool IsReborn { get => isReborn; set => isReborn = value; }
     public bool IsWin { get => isWin; set => isWin = value; }
     public bool IsOnBelt { get => isOnBelt; set => isOnBelt = value; }
-    public string nextScene;
+    [SerializeField]
+    private  string nextScene;
+    public string NextScene { get => nextScene; set => nextScene = value; }
+    [SerializeField]
     public void Idle()
     {
 
@@ -245,7 +249,8 @@ public class Player : MonoBehaviour
         if(collision.tag == "PointFinal")
         {
             IsWin = true;
-            GameManager.Instance.LoadLevel(nextScene);
+            Debug.Log("11111111111win1");
+            SceneManager.LoadScene(NextScene);
             //Reborn();
         } 
         
