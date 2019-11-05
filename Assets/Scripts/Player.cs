@@ -245,8 +245,8 @@ public class Player : MonoBehaviour
         if(collision.tag == "PointFinal")
         {
             IsWin = true;
-            
-            Reborn();
+            GameManager.Instance.LoadLevel(nextScene);
+            //Reborn();
         } 
         
     }
