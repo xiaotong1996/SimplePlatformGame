@@ -7871,25 +7871,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6350873588411781054, guid: 596d52369fbe9824596a6e7def490499,
-        type: 3}
-      propertyPath: nextScene
-      value: game1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6350873588411781054, guid: 596d52369fbe9824596a6e7def490499,
-        type: 3}
-      propertyPath: wallLeapF.x
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 6350873588411781054, guid: 596d52369fbe9824596a6e7def490499,
-        type: 3}
-      propertyPath: wallLeapF.y
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 127500000, guid: 596d52369fbe9824596a6e7def490499, type: 3}
-      propertyPath: m_Radius
-      value: 0.48
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 596d52369fbe9824596a6e7def490499, type: 3}
 --- !u!1001 &6991696098220667303
