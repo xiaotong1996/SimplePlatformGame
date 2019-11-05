@@ -91,6 +91,7 @@ public class Player : MonoBehaviour
     private bool isDeath;
     private bool isWin;
     private bool isReborn;
+    private bool isOnBelt;
     private int onWallDirection = 0; //1-->left  -1 -->right;
     public bool WallSliding { get => wallSliding; set => wallSliding = value; }
     public bool IsOnIce { get => isOnIce; set => isOnIce = value; }
@@ -103,6 +104,7 @@ public class Player : MonoBehaviour
     public bool IsDeath { get => isDeath; set => isDeath = value; }
     public bool IsReborn { get => isReborn; set => isReborn = value; }
     public bool IsWin { get => isWin; set => isWin = value; }
+    public bool IsOnBelt { get => isOnBelt; set => isOnBelt = value; }
 
     public void Idle()
     {
@@ -214,6 +216,16 @@ public class Player : MonoBehaviour
 
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.tag == "Conveyor belt")
+        {
+            Debug.Log("is on belt");
+
+            IsOnBelt = true;
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "StartPoint")
@@ -234,6 +246,15 @@ public class Player : MonoBehaviour
         {
             IsWin = true;
             Reborn();
+        } 
+        
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.collider.tag == "Conveyor belt")
+        {
+            IsOnBelt = false;
         }
         
     }
@@ -244,6 +265,7 @@ public class Player : MonoBehaviour
         {
             isOnIce = false;
         }
+        
     }
 
 
@@ -291,7 +313,7 @@ public class Player : MonoBehaviour
 
     void StopMove()
     {
-        if(IsOnGround && Input.GetAxis("Horizontal") == 0)
+        if(IsOnGround && Input.GetAxis("Horizontal") == 0 && !IsOnBelt)
         {
             rigidbody.velocity = new Vector2(0, 0);
         }

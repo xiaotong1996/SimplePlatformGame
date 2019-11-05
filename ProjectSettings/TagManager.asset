@@ -9,6 +9,7 @@ TagManager:
   - Ice
   - StartPoint
   - PointFinal
+  - Conveyor belt
   layers:
   - Default
   - TransparentFX
